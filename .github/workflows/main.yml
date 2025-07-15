@@ -40,5 +40,5 @@ jobs:
           AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
           AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
           AZURE_FEDERATED_TOKEN_FILE: ${{ env.AZURE_FEDERATED_TOKEN_FILE }}
-        run: java -cp target/wif-graph-access-1.0.0.jar com.example.WIF.demoWIFPractice.DemoWifPracticeApplication
+        run: java -jar target/demoWIFPractice-0.0.1-SNAPSHOT.jar
         working-directory: demoWIFPractice
