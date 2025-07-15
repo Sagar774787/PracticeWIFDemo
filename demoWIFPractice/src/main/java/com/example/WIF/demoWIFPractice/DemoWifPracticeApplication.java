@@ -14,8 +14,8 @@ public class DemoWifPracticeApplication {
 
 	public static void main(String[] args)
 	{
-		final String clientId = System.getenv("AZURE_CLIENT_ID");
-		final String tenantId = System.getenv("AZURE_TENANT_ID");
+		String clientId = "6d744513-e81e-41b2-9255-36245df21dc1";
+		String tenantId = "82d7b827-a565-45ad-9cad-0650001e8b29";
 		final String tokenPath = System.getenv("AZURE_FEDERATED_TOKEN_FILE");
 
 		if (clientId == null || tenantId == null || tokenPath == null) {

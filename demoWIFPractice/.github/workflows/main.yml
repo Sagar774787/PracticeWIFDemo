@@ -3,7 +3,7 @@ name: WIF → Graph Access Packages (Windows)
 on:
   push:
     branches:
-      - main
+      - master
 
 permissions:
   id-token: write
@@ -32,9 +32,11 @@ jobs:
           java-version: '17'
 
       - name: Build with Maven
+        working-directory: PracticeWIFDemo       # ✅ Add this line
         run: mvn clean package
 
       - name: Run Access Package Fetcher
+        working-directory: PracticeWIFDemo       # ✅ Add this line
         env:
           AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
           AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
