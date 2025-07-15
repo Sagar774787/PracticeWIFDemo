@@ -33,6 +33,7 @@ jobs:
 
       - name: Build with Maven
         run: mvn clean package
+        working-directory: demoWIFPractice
 
       - name: Run Access Package Fetcher
         env:
@@ -40,3 +41,4 @@ jobs:
           AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
           AZURE_FEDERATED_TOKEN_FILE: ${{ env.AZURE_FEDERATED_TOKEN_FILE }}
         run: java -cp target/wif-graph-access-1.0.0.jar com.example.WifAccessPackages
+        working-directory: demoWIFPractice
