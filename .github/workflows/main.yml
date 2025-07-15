@@ -1,0 +1,42 @@
+name: WIF → Graph Access Packages (Windows)
+
+on:
+  push:
+    branches:
+      - master
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  wif-java:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Get OIDC token and save
+        shell: pwsh
+        run: |
+          $token = Invoke-RestMethod -Uri "$env:ACTIONS_ID_TOKEN_REQUEST_URL&audience=api://AzureADTokenExchange" `
+                                     -Headers @{ Authorization = "Bearer $env:ACTIONS_ID_TOKEN_REQUEST_TOKEN" }
+          $token.value | Out-File -FilePath $env:RUNNER_TEMP\wif-token.txt -Encoding ascii
+          echo "AZURE_FEDERATED_TOKEN_FILE=$env:RUNNER_TEMP\wif-token.txt" |
+            Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Build with Maven
+        run: mvn clean package
+
+      - name: Run Access Package Fetcher
+        env:
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          AZURE_FEDERATED_TOKEN_FILE: ${{ env.AZURE_FEDERATED_TOKEN_FILE }}
+        run: java -cp target/wif-graph-access-1.0.0.jar com.example.WifAccessPackages
